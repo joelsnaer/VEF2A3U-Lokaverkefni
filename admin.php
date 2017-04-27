@@ -9,11 +9,11 @@ include 'query.php';
     <title>Admin Svæði - Lokaverkefni</title>
   </head>
   <body>
-    <ul>
-      <li><a href="uploadgallery.php">Upload to Gallery</a></li>
-      <li><a href="logout.php">Log-out</a></li>
-    </ul>
     <div class="container">
+      <ul class="navigator">
+        <li><a href="logout.php">Log-out</a></li>
+        <li><a href="uploadgallery.php">Upload to gallery</a></li>
+      </ul>
     <?php
     session_unset();
     session_start();
@@ -37,14 +37,13 @@ include 'query.php';
        <input type="text" name="nafn" required>
        <input type="submit" value="Breyta nafni">
      </form>
-     <a href="logout.php">Ýttu hér til að logga út</a><br>
      <?php
-      $id = getID($conn, $name["name"], $email);
+      /*$id = getID($conn, $name["name"], $email);
       $images = getImage($conn, $id[0]);
       foreach ($images as $image => $value) {
         echo '<img src="' . $value['link'] . '"><br>';
         echo '<a href="delete.php?link=' . $value['link'] . '&id=' . $id[0] . '"> Eyða</a><br>';
-      }
+      }*/
       ?>
     </div>
   </body>
