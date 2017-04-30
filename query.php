@@ -38,17 +38,17 @@ function breytaNafni($conn, $name, $email) {
   $statement->execute();
 }
 
-function getID($conn, $name, $email) {
-  $statement = $conn->prepare("SELECT ID FROM user WHERE email = :email AND name = :name");
+function getID($conn, $email) {
+  $statement = $conn->prepare("SELECT ID FROM user WHERE email = :email");
   $statement->bindParam(':email', $email, PDO::PARAM_STR);
-  $statement->bindParam(':name', $name, PDO::PARAM_STR);
   $statement->execute();
   $upplysingar = $statement->fetch();
   return $upplysingar;
 }
 
-function addImage($conn, $id) {
-  $statement = $conn->prepare('INSERT INTO myndir VALUES ("Toucan", "myndir/toucan.jpg", "Þetta er mynd af toucan", :id),("Dreki", "myndir/dragoon.jpg", "Þetta er mynd af dreka", :id),("Hydra", "myndir/hydra.jpg", "Þetta er mynd af hydra", :id),("Whale", "myndir/whale.jpg", "Þetta er mynd af hvali", :id)');
+function addImage($conn, $link, $id) {
+  $statement = $conn->prepare('INSERT INTO myndir(link, userid) VALUES (:link, :id)');
+  $statement->bindParam(':link', $link);
   $statement->bindParam(':id', $id);
   $statement->execute();
 }

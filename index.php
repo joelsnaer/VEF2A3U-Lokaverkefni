@@ -10,9 +10,9 @@ include 'query.php';
   </head>
   <body>
     <div class="container">
-      <!--<ul>
+      <ul class="navigator">
         <li><a href="signup.php">Sign-up</a></li>
-      </ul>-->
+      </ul>
     <?php
     if (!empty($_POST["email"]) && !empty($_POST["password"])) {
       $email = $_POST["email"];
@@ -30,7 +30,6 @@ include 'query.php';
         <input name="password" type="password" required><br>
         <input type="submit" value="Log In">
       </form>
-        <a href="signup.php">Sign Up</a>
     </div>
   </body>
 </html>
