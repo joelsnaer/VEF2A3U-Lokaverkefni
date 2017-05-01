@@ -46,25 +46,12 @@ function getID($conn, $email) {
   return $upplysingar;
 }
 
-function addImage($conn, $link, $id) {
-  $statement = $conn->prepare('INSERT INTO myndir(link, userid) VALUES (:link, :id)');
+function addImage($conn, $name, $link, $id) {
+  $statement = $conn->prepare('INSERT INTO myndir(name, link, userid) VALUES (:name, :link, :id)');
+  $statement->bindParam(':name', $name);
   $statement->bindParam(':link', $link);
   $statement->bindParam(':id', $id);
   $statement->execute();
 }
 
-function getImage($conn, $id){
-  $statement = $conn->prepare("SELECT name, link FROM myndir WHERE userID = :id");
-  $statement->bindParam(':id', $id);
-  $statement->execute();
-  $upplysingar = $statement->fetchAll();
-  return $upplysingar;
-}
-
-function deleteImage($conn, $id, $link){
-  $statement = $conn->prepare("DELETE FROM myndir WHERE userID = :id AND link = :link");
-  $statement->bindParam(':id', $id);
-  $statement->bindParam(':link', $link, PDO::PARAM_STR);
-  $statement->execute();
-}
  ?>

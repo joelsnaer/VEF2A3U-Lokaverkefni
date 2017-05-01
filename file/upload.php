@@ -1,5 +1,7 @@
 <?php
 namespace File;
+
+
 class Upload {
     protected $uploaded = [];
     protected $destination;
@@ -12,16 +14,35 @@ class Upload {
         'image/png'
     ];
     protected $typeCheckingOn = true;
+    protected $notTrusted = ['bin', 'cgi', 'exe', 'js', 'pl', 'php', 'py', 'sh'];
+    protected $suffix = '.upload';
+    protected $newName;
+    protected $renameDuplicates;
     public function __construct($path) {
         if (!is_dir($path) || !is_writable($path)) {
             throw new \Exception("$path must be a valid, writable directory.");
         }
         $this->destination = $path;
     }
-    public function upload($number) {
+    public function upload($number, $renameDuplicates = true) {
+        $this->renameDuplicates = $renameDuplicates;
         $uploaded = current($_FILES);
-        if ($this->checkFile($uploaded)) {
-            $this->moveFile($uploaded, $number);
+        if (is_array($uploaded['name'])) {
+            // deal with multiple uploads
+            foreach ($uploaded['name'] as $key => $value) {
+                $currentFile['name'] = $uploaded['name'][$key];
+                $currentFile['type'] = $uploaded['type'][$key];
+                $currentFile['tmp_name'] = $uploaded['tmp_name'][$key];
+                $currentFile['error'] = $uploaded['error'][$key];
+                $currentFile['size'] = $uploaded['size'][$key];
+                if ($this->checkFile($currentFile)) {
+                    $this->moveFile($currentFile, $number);
+                }
+            }
+        } else {
+            if ($this->checkFile($uploaded)) {
+                $this->moveFile($uploaded);
+            }
         }
     }
     public function getMessages() {
@@ -35,8 +56,11 @@ class Upload {
             $this->max = (int) $num;
         }
     }
-    public function allowAllTypes() {
+    public function allowAllTypes($suffix = true) {
         $this->typeCheckingOn = false;
+        if (!$suffix) {
+            $this->suffix = '';  // empty string
+        }
     }
     protected function checkFile($file) {
         $accept = true;
@@ -56,6 +80,9 @@ class Upload {
             if (!$this->checkType($file)) {
                 $accept = false;
             }
+        }
+        if ($accept) {
+            $this->moveFile($file);
         }
         return $accept;
     }
@@ -101,11 +128,43 @@ class Upload {
             return false;
         }
     }
+    protected function checkName($file) {
+        $this->newName = null;
+        $nospaces = str_replace(' ', '_', $file['name']);
+        if ($nospaces != $file['name']) {
+            $this->newName = $nospaces;
+        }
+        $extension = pathinfo($nospaces, PATHINFO_EXTENSION);
+        if (!$this->typeCheckingOn && !empty($this->suffix)) {
+            if (in_array($extension, $this->notTrusted) || empty($extension)) {
+                $this->newName = $nospaces . $this->suffix;
+            }
+        }
+        if ($this->renameDuplicates) {
+            $name = isset($this->newName) ? $this->newName : $file['name'];
+            $existing = scandir($this->destination);
+            if (in_array($name, $existing)) {
+                // rename file
+                $basename = pathinfo($name, PATHINFO_FILENAME);
+                $extension = pathinfo($name, PATHINFO_EXTENSION);
+                $i = 1;
+                do {
+                    $this->newName = $basename . '_' . $i++;
+                    if (!empty($extension)) {
+                        $this->newName .= ".$extension";
+                    }
+                } while (in_array($this->newName, $existing));
+            }
+        }
+    }
     protected function moveFile($file, $number) {
-        $newname = $number . "_" . $file['name'];
-        $success = move_uploaded_file($file['tmp_name'], $this->destination . $newname);
+        $filename = isset($this->newName) ? $this->newName : $file['name'];
+        $success = move_uploaded_file($file['tmp_name'], $this->destination . $filename);
         if ($success) {
             $result = $file['name'] . ' was uploaded successfully';
+            if (!is_null($this->newName)) {
+                $result .= ', and was renamed ' . $this->newName;
+            }
             $this->messages[] = $result;
         } else {
             $this->messages[] = 'Could not upload ' . $file['name'];

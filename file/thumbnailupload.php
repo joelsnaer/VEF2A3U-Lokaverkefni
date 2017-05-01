@@ -1,14 +1,15 @@
 <?php
-namespace File;
-use File\Upload;
-require_once 'upload.php';
-require_once 'thumbnail.php';
+  namespace File;
 
-class ThumbnailUpload extends Upload {
+  use File\Upload;
+
+  require_once 'upload.php';
+  require_once 'thumbnail.php';
+
+  class ThumbnailUpload extends Upload {
     protected $thumbDestination;
     protected $deleteOriginal;
     protected $suffix = '_thb';
-
     public function __construct($path, $deleteOriginal = false) {
         parent::__construct($path);
         $this->thumbDestination = $path;
@@ -42,8 +43,10 @@ class ThumbnailUpload extends Upload {
         $messages = $thumb->getMessages();
         $this->messages = array_merge($this->messages, $messages);
     }
-    /*protected function moveFile($file) {
+
+    protected function moveFile($file, $number) {
         $filename = isset($this->newName) ? $this->newName : $file['name'];
+        $filename = "9" . "_" . $filename;
         $success = move_uploaded_file($file['tmp_name'], $this->destination . $filename);
         if ($success) {
             // add a message only if the original image is not deleted
@@ -63,6 +66,19 @@ class ThumbnailUpload extends Upload {
         } else {
             $this->messages[] = 'Could not upload ' . $file['name'];
         }
+    }
+    /*protected function moveFile($file) {
+        $filename = isset($this->newName) ? $this->newName : $file['name'];
+        $success = move_uploaded_file($file['tmp_name'], $this->destination . $filename);
+        if ($success) {
+            $result = $file['name'] . ' was uploaded successfully';
+            if (!is_null($this->newName)) {
+                $result .= ', and was renamed ' . $this->newName;
+            }
+            $this->messages[] = $result;
+        } else {
+            $this->messages[] = 'Could not upload ' . $file['name'];
+        }
     }*/
-    
-}
+  }
+ ?>

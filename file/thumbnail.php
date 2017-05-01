@@ -1,7 +1,5 @@
-
 <?php
 namespace File;
-
 class Thumbnail {
     protected $original;
     protected $originalwidth;
@@ -9,7 +7,7 @@ class Thumbnail {
     protected $basename;
     protected $thumbwidth;
     protected $thumbheight;
-    protected $maxSize = 120;
+    protected $maxSize = 512000;
     protected $canProcess = false;
     protected $imageType;
     protected $destination;
@@ -75,7 +73,21 @@ class Thumbnail {
     public function getMessages() {
         return $this->messages;
     }
-
+    /*public function test() {
+        echo 'File: ' . $this->original . '<br>';
+        echo 'Original width: ' . $this->originalwidth . '<br>';
+        echo 'Original height: ' . $this->originalheight . '<br>';
+        echo 'Base name: ' . $this->basename . '<br>';
+        echo 'Image type: ' . $this->imageType . '<br>';
+        echo 'Destination: ' . $this->destination . '<br>';
+        echo 'Max size: ' . $this->maxSize .  '<br>';
+        echo 'Suffix: ' . $this->suffix .  '<br>';
+        echo 'Thumb width: ' . $this->thumbwidth . '<br>';
+        echo 'Thumb height: ' . $this->thumbheight . '<br>';
+        if ($this->messages) {
+            print_r($this->messages);
+        }
+    }*/
     protected function checkType($mime) {
         $mimetypes = array('image/jpeg', 'image/png', 'image/gif');
         if (in_array($mime, $mimetypes)) {

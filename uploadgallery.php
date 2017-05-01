@@ -1,14 +1,4 @@
 <?php
-//Include-að öll file og notað namespace-in
-include 'connection.php';
-include 'query.php';
-
-use File\Upload;
-use File\Thumbnail;
-use File\ThumbnailUpload;
-?>
-
-<?php
 //Séð ef session virkar
 session_unset();
 session_start();
@@ -21,28 +11,35 @@ else {
 ?>
 
 <?php
+//Include-að öll file og notað namespace-in
+include 'connection.php';
+include 'query.php';
+
+use File\Upload;
+use File\Thumbnail;
+use File\ThumbnailUpload;
+?>
+
+
+
+<?php
 if (isset($_POST['upload'])) {
-    $destination = $_SERVER['DOCUMENT_ROOT'] . "/Lokaverkefni/myndir/";
-    require_once 'file/upload.php';
+    require_once('file/thumbnailupload.php');
     try {
         $id = getId($conn, $email);
         $number = $id[0];
-        $loader = new Upload($destination);
+        $destination = $_SERVER['DOCUMENT_ROOT'] . "/Lokaverkefni/myndir/";
+        $thumbnailDestination = $_SERVER['DOCUMENT_ROOT'] . "/Lokaverkefni/myndir/Thumbnail";
+        $dest = "/Lokaverkefni/myndir/";
+        $loader = new ThumbnailUpload($destination);
+        $loader->setThumbDestination($thumbnailDestination);
         $loader->upload($number);
-        $result = $loader->getMessages();
-        addImage($conn, $destination, $number);
+        $messages = $loader->getMessages();
+        $newImageName = $number . "_" . $_FILES['image']['name'];
+        $imageDestination = $dest . $newImageName;
+        addImage($conn, $_FILES['image']['name'], $imageDestination, $number);
     } catch (Exception $e) {
         echo $e->getMessage();
-    }
-    require_once('file/thumbnail.php');
-    try {
-      $thumbnailDestination = $_SERVER['DOCUMENT_ROOT'] . "/Lokaverkefni/myndir/Thumbnail";
-      $thumb = new Thumbnail($_POST['image']);
-      $thumb->setDestination($thumbnailDestination);
-      $thumb->setSuffix('small');
-      $thumb->create();
-    } catch (Exception $t) {
-      echo $t->getMessage();
     }
 }
  ?>
