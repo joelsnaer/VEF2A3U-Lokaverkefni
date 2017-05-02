@@ -14,6 +14,23 @@ include 'query.php';
         <li><a href="logout.php">Log-out</a></li>
         <li><a href="uploadgallery.php">Upload to gallery</a></li>
       </ul>
+      <p id="picCount">Displaying 1 to 6 of 8</p>
+        <div id="gallery">
+            <table id="thumbs">
+                <tr>
+                  <?php
+                    $info = getUserInfo($conn, $email);
+                    $id = $info['id'];
+                    $dir = "/myndir" . "/*";
+                    //get the list of all files with .jpg extension in the directory and safe it in an array named $myndir
+                    $myndir = glob( $dir );
+                    foreach ($myndir as $mynd) {
+                      echo "<td><a href=\"" . $_SERVER['PHP_SELF'] . "?image=" . $mynd . "\"><img src=\"" . $mynd . "\"></a></td>";
+                    }
+                   ?>
+                </tr>
+            </table>
+        </div>
     <?php
     session_unset();
     session_start();
@@ -37,14 +54,6 @@ include 'query.php';
        <input type="text" name="nafn" required>
        <input type="submit" value="Breyta nafni">
      </form>
-     <?php
-      /*$id = getID($conn, $name["name"], $email);
-      $images = getImage($conn, $id[0]);
-      foreach ($images as $image => $value) {
-        echo '<img src="' . $value['link'] . '"><br>';
-        echo '<a href="delete.php?link=' . $value['link'] . '&id=' . $id[0] . '"> Eyða</a><br>';
-      }*/
-      ?>
     </div>
   </body>
 </html>

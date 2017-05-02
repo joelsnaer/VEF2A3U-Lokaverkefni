@@ -30,7 +30,7 @@ if (isset($_POST['upload'])) {
         $number = $id[0];
         $destination = $_SERVER['DOCUMENT_ROOT'] . "/Lokaverkefni/myndir/";
         $thumbnailDestination = $_SERVER['DOCUMENT_ROOT'] . "/Lokaverkefni/myndir/Thumbnail";
-        $dest = "/Lokaverkefni/myndir/";
+        $dest = "/myndir/";
         $loader = new ThumbnailUpload($destination);
         $loader->setThumbDestination($thumbnailDestination);
         $loader->upload($number);
