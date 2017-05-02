@@ -1,6 +1,17 @@
 <?php
-include 'connection.php';
-include 'query.php';
+  session_unset();
+  session_start();
+  if ($_SESSION['email']) {
+  $email = $_SESSION['email'];
+  }
+  else {
+    header('Location: index.php');
+  }
+?>
+
+<?php
+  include 'connection.php';
+  include 'query.php';
  ?>
 <html>
   <head>
@@ -14,33 +25,39 @@ include 'query.php';
         <li><a href="logout.php">Log-out</a></li>
         <li><a href="uploadgallery.php">Upload to gallery</a></li>
       </ul>
-      <p id="picCount">Displaying 1 to 6 of 8</p>
+      <?php
+        $id = getId($conn, $email);
+        $info = getDetails($conn, $id[0]);
+        $numberOfImages = imagesCount($conn, $id[0]);
+        $startRow = 0;
+        $max = 6;
+       ?>
+       <p id="picCount">Displaying <?php echo $startRow+1;
+                 if ($max < $numberOfImages[0]) {
+                     echo ' to ';
+                     if ($max < $numberOfImages[0]) {
+                         echo $max;
+                     } else {
+                         echo $numberOfImages[0];
+                     }
+                 }
+                 echo " of $numberOfImages[0]";
+                 ?>
+             </p>
         <div id="gallery">
             <table id="thumbs">
                 <tr>
                   <?php
-                    $info = getUserInfo($conn, $email);
-                    $id = $info['id'];
-                    $dir = "/myndir" . "/*";
-                    //get the list of all files with .jpg extension in the directory and safe it in an array named $myndir
-                    $myndir = glob( $dir );
-                    foreach ($myndir as $mynd) {
-                      echo "<td><a href=\"" . $_SERVER['PHP_SELF'] . "?image=" . $mynd . "\"><img src=\"" . $mynd . "\"></a></td>";
+                    print_r($info);
+                    foreach ($info['link'] as $result) {
+                      
                     }
                    ?>
                 </tr>
             </table>
         </div>
     <?php
-    session_unset();
-    session_start();
-    if ($_SESSION['email']) {
-    $email = $_SESSION['email'];
-    }
-    else {
-      header('Location: index.php');
-    }
-    $name = saekjaNafn($conn, $email);
+    /*$name = saekjaNafn($conn, $email);
     echo "Velkomin " . $name["name"] . "<br>";
     echo "Email þitt er: " . $email . "<br>";
 
@@ -48,12 +65,12 @@ include 'query.php';
       $nafn = $_POST["nafn"];
       breytaNafni($conn, $nafn, $email);
       header("Refresh:0");
-    }
+    }*/
      ?>
-     <form method="post" action="admin.php">
+     <!--<form method="post" action="admin.php">
        <input type="text" name="nafn" required>
        <input type="submit" value="Breyta nafni">
-     </form>
+     </form>-->
     </div>
   </body>
 </html>

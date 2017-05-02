@@ -24,7 +24,7 @@ class Upload {
         }
         $this->destination = $path;
     }
-    public function upload($number, $renameDuplicates = true) {
+    public function upload($number, $renameDuplicates = false) {
         $this->renameDuplicates = $renameDuplicates;
         $uploaded = current($_FILES);
         if (is_array($uploaded['name'])) {
@@ -35,13 +35,13 @@ class Upload {
                 $currentFile['tmp_name'] = $uploaded['tmp_name'][$key];
                 $currentFile['error'] = $uploaded['error'][$key];
                 $currentFile['size'] = $uploaded['size'][$key];
-                if ($this->checkFile($currentFile)) {
+                if ($this->checkFile($currentFile, $number)) {
                     $this->moveFile($currentFile, $number);
                 }
             }
         } else {
-            if ($this->checkFile($uploaded)) {
-                $this->moveFile($uploaded);
+            if ($this->checkFile($uploaded, $number)) {
+                $this->moveFile($uploaded, $number);
             }
         }
     }
@@ -62,7 +62,7 @@ class Upload {
             $this->suffix = '';  // empty string
         }
     }
-    protected function checkFile($file) {
+    protected function checkFile($file, $number) {
         $accept = true;
         if ($file['error'] != 0) {
             $this->getErrorMessage($file);
@@ -82,7 +82,7 @@ class Upload {
             }
         }
         if ($accept) {
-            $this->moveFile($file);
+            $this->moveFile($file, $number);
         }
         return $accept;
     }
@@ -159,6 +159,7 @@ class Upload {
     }
     protected function moveFile($file, $number) {
         $filename = isset($this->newName) ? $this->newName : $file['name'];
+        $filename = $number . "_" . $filename;
         $success = move_uploaded_file($file['tmp_name'], $this->destination . $filename);
         if ($success) {
             $result = $file['name'] . ' was uploaded successfully';

@@ -54,4 +54,19 @@ function addImage($conn, $name, $link, $id) {
   $statement->execute();
 }
 
+function getDetails($conn, $id) {
+  $statement = $conn->prepare("SELECT name, link FROM myndir WHERE userID = :id");
+  $statement->bindParam(':id', $id);
+  $statement->execute();
+  $upplysingar = $statement->fetchAll();
+  return $upplysingar;
+}
+
+function imagesCount($conn, $id) {
+  $statement = $conn->prepare("SELECT COUNT(*) FROM myndir WHERE userID = :id");
+  $statement->bindParam(':id', $id);
+  $statement->execute();
+  $upplysingar = $statement->fetch();
+  return $upplysingar;
+}
  ?>

@@ -46,7 +46,7 @@
 
     protected function moveFile($file, $number) {
         $filename = isset($this->newName) ? $this->newName : $file['name'];
-        $filename = "9" . "_" . $filename;
+        $filename = $number . "_" . $filename;
         $success = move_uploaded_file($file['tmp_name'], $this->destination . $filename);
         if ($success) {
             // add a message only if the original image is not deleted
