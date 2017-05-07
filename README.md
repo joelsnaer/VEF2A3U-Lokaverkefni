@@ -13,3 +13,11 @@ Nota Upload, Thumbnail og ThumbnailUpload klasana út úr bókinni til að uploa
 
 # Birta myndir
 Er með table þar sem ég bý til nýtt table row hvert sinn sem ég það er birt 4 myndir. Þannig því fleiri myndir eru á vefnum því fleiri rows eru í table-inu, birti myndinar eftir að sækja þær af gagnagrunninum með PDO skipun
+
+# Skrár
+Í css skrá geymi ég css file-in mín
+Í file skránni er ég með alla klasana
+Í myndir er upload-að myndirnar og thumbnailin
+
+# Log-in og sign up
+Þegar þú sign-ar up fer það í gagnagrunnin með PDO skipun og þegar þú loggar inn er kíkt ef þetta email er á gagnagrunninum
