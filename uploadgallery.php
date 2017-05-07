@@ -30,14 +30,15 @@ if (isset($_POST['upload'])) {
         $number = $id[0];
         $destination = $_SERVER['DOCUMENT_ROOT'] . "/Lokaverkefni/myndir/";
         $thumbnailDestination = $_SERVER['DOCUMENT_ROOT'] . "/Lokaverkefni/myndir/Thumbnail";
-        $dest = "Lokaverkefni/myndir/";
+        $dest = "myndir/";
         $loader = new ThumbnailUpload($destination);
         $loader->setThumbDestination($thumbnailDestination);
         $loader->upload($number);
         $messages = $loader->getMessages();
         $newImageName = $number . "_" . $_FILES['image']['name'];
         $imageDestination = $dest . $newImageName;
-        addImage($conn, $_FILES['image']['name'], $imageDestination, $number);
+        $thumbnailNameLink = $dest . "Thumbnail/" . $newImageName;
+        addImage($conn, $_FILES['image']['name'], $imageDestination, $thumbnailNameLink, $number);
     } catch (Exception $e) {
         echo $e->getMessage();
     }
@@ -55,6 +56,7 @@ if (isset($_POST['upload'])) {
         <li><a href="logout.php">Log-out</a></li>
         <li><a href="admin.php">Gallery</a></li>
       </ul>
+      <div class="aligner">
       <form action="" method="post" enctype="multipart/form-data" id="uploadImage">
        <p>
          <label for="image">Upload image:</label>
@@ -63,7 +65,8 @@ if (isset($_POST['upload'])) {
        <p>
          <input type="submit" name="upload" id="upload" value="Upload">
        </p>
-     </form>
+      </form>
+     </div>
     </div>
   </body>
 </html>

@@ -46,16 +46,17 @@ function getID($conn, $email) {
   return $upplysingar;
 }
 
-function addImage($conn, $name, $link, $id) {
-  $statement = $conn->prepare('INSERT INTO myndir(name, link, userid) VALUES (:name, :link, :id)');
+function addImage($conn, $name, $link, $thumbnailLink, $id) {
+  $statement = $conn->prepare('INSERT INTO myndir(name, link, thumbnailLink, userid) VALUES (:name, :link, :thumbnailLink, :id)');
   $statement->bindParam(':name', $name);
   $statement->bindParam(':link', $link);
+  $statement->bindParam(':thumbnailLink', $thumbnailLink);
   $statement->bindParam(':id', $id);
   $statement->execute();
 }
 
 function getDetails($conn, $id) {
-  $statement = $conn->prepare("SELECT name, link FROM myndir WHERE userID = :id");
+  $statement = $conn->prepare("SELECT name, link, thumbnailLink FROM myndir WHERE userID = :id");
   $statement->bindParam(':id', $id);
   $statement->execute();
   $upplysingar = $statement->fetchAll();

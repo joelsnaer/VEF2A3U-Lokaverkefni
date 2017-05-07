@@ -7,7 +7,7 @@ class Thumbnail {
     protected $basename;
     protected $thumbwidth;
     protected $thumbheight;
-    protected $maxSize = 512000;
+    protected $maxSize = 350;
     protected $canProcess = false;
     protected $imageType;
     protected $destination;
@@ -121,7 +121,7 @@ class Thumbnail {
         $thumb = imagecreatetruecolor($this->thumbwidth, $this->thumbheight);
         imagecopyresampled($thumb, $resource, 0, 0, 0, 0, $this->thumbwidth,
             $this->thumbheight, $this->originalwidth, $this->originalheight);
-        $newname = $this->basename . $this->suffix;
+        $newname = $this->basename;
         if ($this->imageType == 'jpeg') {
             $newname .= '.jpg';
             $success = imagejpeg($thumb, $this->destination . $newname, 100);

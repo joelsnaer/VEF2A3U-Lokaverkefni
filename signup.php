@@ -6,10 +6,9 @@ include 'query.php';
   <head>
     <meta charset="utf-8">
     <title>Sign Up - Verkefni 7</title>
-    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="css/styles.css">
   </head>
   <body>
-    <h1>Sign Up</h1>
     <?php
       if (!empty($_POST["name"]) && !empty($_POST["email"]) && !empty($_POST["password"])) {
         $name = $_POST["name"];
@@ -21,7 +20,12 @@ include 'query.php';
         header('location: index.php');
       }
     ?>
-    <form method="post" action="signup.php">
+    <div class="container">
+      <ul class="navigator">
+        <li><a href="index.php">Sign-in</a></li>
+      </ul>
+      <h1>Sign Up</h1>
+      <form method="post" action="signup.php">
         <label>Name:</label>
         <input name="name" type="text" required><br>
         <label>E-Mail:</label>
@@ -29,6 +33,7 @@ include 'query.php';
         <label>Password:</label>
         <input name="password" type="password" required><br>
         <input type="submit" value="Sign up">
-    </form>
+      </form>
+    </div>
   </body>
 </html>

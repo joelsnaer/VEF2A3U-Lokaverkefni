@@ -27,50 +27,34 @@
       </ul>
       <?php
         $id = getId($conn, $email);
-        $info = getDetails($conn, $id[0]);
-        $numberOfImages = imagesCount($conn, $id[0]);
-        $startRow = 0;
-        $max = 6;
+        $number = $id[0];
+        $info = getDetails($conn, $number);
+        $numberOfImages = imagesCount($conn, $number);
+        $i = 0;
+        $nuverandiSida = 0;
        ?>
-       <p id="picCount">Displaying <?php echo $startRow+1;
-                 if ($max < $numberOfImages[0]) {
-                     echo ' to ';
-                     if ($max < $numberOfImages[0]) {
-                         echo $max;
-                     } else {
-                         echo $numberOfImages[0];
-                     }
-                 }
-                 echo " of $numberOfImages[0]";
-                 ?>
-             </p>
+       <p>Displaying all of your images</p>
         <div id="gallery">
             <table id="thumbs">
-                <tr>
                   <?php
-                    print_r($info);
-                    foreach ($info['link'] as $result) {
-                      
-                    }
+                  //print_r($info);
+                    foreach ($info as $mynd) {
+                      if ($i == 0) {
+                        echo '<tr><td><img src="'. $mynd['thumbnailLink'].'"></td>';
+                        $i++;
+                      }
+                      else if ($i == 3) {
+                        echo '<td><img src="'. $mynd['thumbnailLink'].'"></td></tr>';
+                        $i = 0;
+                      }
+                      else {
+                          echo '<td><img src="'. $mynd['thumbnailLink'].'"></td>';
+                          $i++;
+                      }
+                     }
                    ?>
-                </tr>
             </table>
         </div>
-    <?php
-    /*$name = saekjaNafn($conn, $email);
-    echo "Velkomin " . $name["name"] . "<br>";
-    echo "Email þitt er: " . $email . "<br>";
-
-  if (!empty($_POST["nafn"])) {
-      $nafn = $_POST["nafn"];
-      breytaNafni($conn, $nafn, $email);
-      header("Refresh:0");
-    }*/
-     ?>
-     <!--<form method="post" action="admin.php">
-       <input type="text" name="nafn" required>
-       <input type="submit" value="Breyta nafni">
-     </form>-->
     </div>
   </body>
 </html>

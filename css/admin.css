@@ -1,10 +1,14 @@
+body {
+  background-image: url("../myndir/background.jpg");
+}
+
 .container {
   /*Lætur allt inn í flexboxinu vera flexbox*/
   display: flex;
   flex-direction: column;
   margin: auto;
   height: 100%;
-  width: 90%;
+  width: 80%;
   background-color: #EFF5FF;
 }
 
@@ -35,4 +39,21 @@
 .navigator a.active {
   background-color: #4CAF50;
   color: white;
+}
+
+form {
+  border: 1px solid #ccc!important;
+  border-radius: 16px;
+  padding: 50px;
+}
+
+.aligner {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding:10px;
+}
+/* Gallery CSS*/
+img {
+  padding-left: 1em;
 }
