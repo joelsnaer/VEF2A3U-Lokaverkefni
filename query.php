@@ -24,11 +24,16 @@ function sessionStart($email) {
 }
 
 function saekjaNafn($conn, $email) {
-  $statement = $conn->prepare("SELECT name FROM user WHERE email = :email");
+  $statement = $conn->prepare("SELECT * FROM user WHERE email = :email");
   $statement->bindParam(':email', $email, PDO::PARAM_STR);
   $statement->execute();
   $upplysingar = $statement->fetch();
-  return $upplysingar;
+  if ($upplysingar > 0) {
+    return true;
+  }
+  else {
+    return false;
+  }
 }
 
 function breytaNafni($conn, $name, $email) {

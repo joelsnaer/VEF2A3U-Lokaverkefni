@@ -16,7 +16,7 @@
 <html>
   <head>
     <meta charset="utf-8">
-    <link rel="stylesheet" href="css/admin.css">
+    <link rel="stylesheet" href="css/gallery.css">
     <title>Admin Svæði - Lokaverkefni</title>
   </head>
   <body>
@@ -39,18 +39,9 @@
                   <?php
                   //print_r($info);
                     foreach ($info as $mynd) {
-                      if ($i == 0) {
-                        echo '<tr><td><img src="'. $mynd['thumbnailLink'].'"></td>';
-                        $i++;
-                      }
-                      else if ($i == 3) {
-                        echo '<td><img src="'. $mynd['thumbnailLink'].'"></td></tr>';
-                        $i = 0;
-                      }
-                      else {
-                          echo '<td><img src="'. $mynd['thumbnailLink'].'"></td>';
-                          $i++;
-                      }
+                      //echo '<td><img src="'. $mynd['thumbnailLink'].'"></td>';
+                      echo "<td><a href=\"" . "/Lokaverkefni/" . $mynd['link'] . "\"><img src=\"" . $mynd['thumbnailLink'] . "\"></a></td>";
+                      $i++;
                      }
                    ?>
             </table>

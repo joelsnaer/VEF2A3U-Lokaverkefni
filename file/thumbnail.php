@@ -7,7 +7,7 @@ class Thumbnail {
     protected $basename;
     protected $thumbwidth;
     protected $thumbheight;
-    protected $maxSize = 350;
+    protected $maxSize = 200;
     protected $canProcess = false;
     protected $imageType;
     protected $destination;

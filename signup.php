@@ -9,21 +9,27 @@ include 'query.php';
     <link rel="stylesheet" href="css/styles.css">
   </head>
   <body>
+    <div class="container">
+      <ul class="navigator">
+        <li><a href="index.php">Sign-in</a></li>
+      </ul>
     <?php
       if (!empty($_POST["name"]) && !empty($_POST["email"]) && !empty($_POST["password"])) {
         $name = $_POST["name"];
         $email = $_POST["email"];
         $password = $_POST["password"];
         $passworden = hash('sha256', $password);
-        newUser($conn, $name, $email, $passworden);
-        $id = getID($conn, $name, $email);
-        header('location: index.php');
+        if (saekjaNafn($conn, $email) ) {
+          echo "Þetta email er í notkun";
+        }
+        else {
+
+          newUser($conn, $name, $email, $passworden);
+          $id = getID($conn, $name, $email);
+          header('location: index.php');
+        }
       }
     ?>
-    <div class="container">
-      <ul class="navigator">
-        <li><a href="index.php">Sign-in</a></li>
-      </ul>
       <h1>Sign Up</h1>
       <form method="post" action="signup.php">
         <label>Name:</label>
